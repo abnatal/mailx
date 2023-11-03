@@ -137,7 +137,7 @@ ssl_rand_init(void)
 
 	if ((cp = value("ssl-rand-egd")) != NULL) {
 		cp = expand(cp);
-		if (RAND_egd(cp) == -1) {
+		if (RAND_add_egd(cp) == -1) {
 			fprintf(stderr, catgets(catd, CATSET, 245,
 				"entropy daemon at \"%s\" not available\n"),
 					cp);
@@ -216,11 +216,11 @@ ssl_select_method(const char *uhp)
 
 	cp = ssl_method_string(uhp);
 	if (cp != NULL) {
-		if (equal(cp, "ssl2"))
-			method = SSLv2_client_method();
-		else if (equal(cp, "ssl3"))
-			method = SSLv3_client_method();
-		else if (equal(cp, "tls1"))
+		// if (equal(cp, "ssl2"))
+		// 	method = SSLv2_client_method();
+		// else if (equal(cp, "ssl3"))
+		// 	method = SSLv3_client_method();
+		/* else */ if (equal(cp, "tls1"))
 			method = TLSv1_client_method();
 		else {
 			fprintf(stderr, catgets(catd, CATSET, 244,
